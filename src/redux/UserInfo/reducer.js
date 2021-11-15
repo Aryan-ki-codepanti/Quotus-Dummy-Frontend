@@ -30,6 +30,6 @@ export const UserInfoReducer = (state = initialState, action) => {
                     : [action.payload]
             };
         default:
-            break;
+            return state;
     }
 };
