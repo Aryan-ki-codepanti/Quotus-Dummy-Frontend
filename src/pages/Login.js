@@ -1,8 +1,20 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { connect } from "react-redux";
+import { useNavigate } from "react-router";
 import { setUser } from "../redux";
 
 const Login = ({ host , user , setUser }) => {
+
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (localStorage.getItem("user")){
+            navigate("/messenger"  , { replace: true })
+        }
+    }, [ navigate ])
+
+
     const emailRef = useRef(null);
     const passwordRef = useRef(null);
 
