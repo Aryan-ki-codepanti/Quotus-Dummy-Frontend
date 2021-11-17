@@ -38,13 +38,13 @@ const Login = ({ host , user , setUser }) => {
             data.user.token = data.jwt;
             localStorage.setItem("user" , JSON.stringify(data.user));
             setUser(data.user);
+            navigate("/messenger"  , { replace: true });
         }
         else{
             setUser(null)
         }
 
     };
-    console.log(host);
     return (
         <div className="login-form">
             <h1> Login here </h1>
