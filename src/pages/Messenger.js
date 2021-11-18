@@ -8,79 +8,91 @@ import { ChatBox } from "../components/ChatBox";
 import { MyChats } from "../components/MyChats";
 import "./Messenger.css";
 
-
-const Messenger = ({ user, host , setUser }) => {
-
+const Messenger = ({ user, host, setUser }) => {
     const navigate = useNavigate();
 
     const [otherUsers, setOtherUsers] = useState([]);
     const [myChats, setMyChats] = useState([]);
 
-
-    useEffect( () => {
+    useEffect(() => {
         if (!localStorage.getItem("user")) {
-            navigate("/" , { replace: true });
+            navigate("/", { replace: true });
+        } else {
+            setUser(JSON.parse(localStorage.getItem("user")));
         }
-        else{
-
-            setUser(JSON.parse(localStorage.getItem("user")))
-        }
-    } , [ navigate , setUser ]);
+    }, [navigate, setUser]);
 
     useEffect(() => {
-
         const getChats = async () => {
-            const { token } = user;
+            const { token, id } = user;
             const res = await fetch(`${host}/myRooms`, {
                 method: "GET",
-                headers:{
-                    Authorization : `Bearer ${token}`
-                }});
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
             let data = await res.json();
             data = data.filter(chat => chat.participants?.length > 1);
+            data = data.filter(chat =>
+                chat.participants.find(participant => participant.id === id)
+            );
             setMyChats(prev => data);
-        }
+        };
 
         const getOtherChats = async () => {
-            const { token , id } = user;
+            const { token, id } = user;
             const res = await fetch(`${host}/allRooms`, {
                 method: "GET",
-                headers:{
-                    Authorization : `Bearer ${token}`
-                }});
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
             let data = await res.json();
-            data = data.filter(chat => chat.participants.find(participant => participant.id !== id));
+            data = data.filter(
+                chat =>
+                    !Boolean(
+                        chat.participants.find(
+                            participant => participant.id === id
+                        )
+                    )
+            );
             setOtherUsers(prev => data);
-        }
+        };
 
         user && getChats();
         user && getOtherChats();
-    }, [ user , host ]);
-    
+    }, [user, host]);
+
     console.log(user);
-    return  (
+    return (
         <>
-            { user &&
+            {user && (
                 <div>
                     <WelcomeMessage user={user} />
                     <div className="wrapper">
-                        <OtherUsers user={ user } otherUsers={ otherUsers } />
-                        <ChatBox user={ user }/>
-                        <MyChats user={ user } myChats={ myChats }/>
+                        <OtherUsers
+                            user={user}
+                            otherUsers={otherUsers}
+                            host={host}
+                            setOtherUsers={setOtherUsers}
+                            setMyChats={setMyChats}
+                        />
+                        <ChatBox user={user} />
+                        <MyChats user={user} myChats={myChats} />
                     </div>
                 </div>
-            }
+            )}
         </>
     );
 };
 
-const mapStateToProps = ({ auth , user }) => ({
+const mapStateToProps = ({ auth, user }) => ({
     user: auth.user,
     host: auth.host
 });
 
 const mapDispatchToProps = dispatch => ({
     setUser: user => dispatch(setUser(user))
-})
+});
 
-export default connect(mapStateToProps , mapDispatchToProps)(Messenger);
+export default connect(mapStateToProps, mapDispatchToProps)(Messenger);
