@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import { format } from "timeago.js";
 
 export const Message = ({ message , own , participants }) => {
     const getAuthor = uId => participants.find(participant => participant.id === uId); 
@@ -7,7 +8,7 @@ export const Message = ({ message , own , participants }) => {
             <div className="body">
                 { message.body }
             </div>
-            <span> @{ message.author.id ? message.author.username : getAuthor(message.author).username } </span>
+            <span> { format(message.created_at) } @{ message.author.id ? message.author.username : getAuthor(message.author).username } </span>
         </div>
     )
 }
