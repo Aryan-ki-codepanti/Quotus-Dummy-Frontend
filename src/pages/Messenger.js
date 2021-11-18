@@ -13,6 +13,7 @@ const Messenger = ({ user, host, setUser }) => {
 
     const [otherUsers, setOtherUsers] = useState([]);
     const [myChats, setMyChats] = useState([]);
+    const [currentChat, setCurrentChat] = useState(null);
 
     useEffect(() => {
         if (!localStorage.getItem("user")) {
@@ -77,8 +78,8 @@ const Messenger = ({ user, host, setUser }) => {
                             setOtherUsers={setOtherUsers}
                             setMyChats={setMyChats}
                         />
-                        <ChatBox user={user} />
-                        <MyChats user={user} myChats={myChats} />
+                        <ChatBox user={user} currentChat={ currentChat }/>
+                        <MyChats user={user} myChats={myChats} setCurrentChat={ setCurrentChat } />
                     </div>
                 </div>
             )}

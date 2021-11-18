@@ -1,9 +1,13 @@
 import React from 'react'
 
-export const Message = () => {
+export const Message = ({ message , own , participants }) => {
+    const getAuthor = uId => participants.find(participant => participant.id === uId); 
     return (
-        <div>
-            
+        <div className={ own ? `message own` : `message not-own`}>
+            <div className="body">
+                { message.body }
+            </div>
+            <span> @{ getAuthor(message.author).username } </span>
         </div>
     )
 }

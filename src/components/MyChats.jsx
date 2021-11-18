@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const MyChats = ({ user , myChats }) => {
+export const MyChats = ({ user , myChats , setCurrentChat }) => {
     return (
         <div>
             <h3>
@@ -9,7 +9,7 @@ export const MyChats = ({ user , myChats }) => {
 
             {
                 myChats.map(chat => (
-                    <div key={ chat.id } className="myChat">
+                    <div key={ chat.id } className="myChat" onClick={ () => setCurrentChat(prev => chat)}>
                         <p>
                             { chat.participants.map(({ id, username }) => (
                                 <span key={ id }>

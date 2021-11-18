@@ -29,3 +29,74 @@
 .myChat:hover{
     background: rgb(218, 213, 213);
 }
+
+.start-message{
+    background: #EAEAEA;
+    font-size: 1.5rem;
+    padding: 1em;
+    margin: 1em;
+    border-radius: 10px;
+}
+
+.messageBox{
+    height: 50vh;
+    overflow-y: auto;
+    border: 3px solid black;
+    margin-bottom: 0.75em;
+}
+
+.messageFormBox form{
+    display: flex;
+    gap: 0.4em;
+    align-items: center;
+}
+.messageFormBox form textarea{
+    flex: 1;
+    font-size: 1.3rem;
+    padding: 0.5em 0.7em;
+}
+
+.messageFormBox form button{
+    border-radius: 8px;
+    border: none;
+    padding: 0.5em 0.7em;
+    font-size: 1.125rem;
+    background: violet;
+    color: white;
+    cursor: pointer;
+}
+
+/* Message */
+
+.message{
+    display: flex;
+    flex-direction: column;
+    margin: 0.9em 0.75em;
+}
+
+.message span{
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.message .body{
+    max-width: 450px !important;
+    border-radius: 16px;
+    padding: 0.5em;
+}
+
+.not-own .body{
+    background: #EAEAEA;
+    margin-right: auto;
+}
+
+.own .body{
+    background: blue !important;
+    color: white;
+    align-items: end;
+    margin-left: auto;
+}
+
+.own span{
+    text-align: right;
+}
