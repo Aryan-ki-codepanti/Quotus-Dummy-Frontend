@@ -45,27 +45,6 @@
     margin-bottom: 0.75em;
 }
 
-.messageFormBox form{
-    display: flex;
-    gap: 0.4em;
-    align-items: center;
-}
-.messageFormBox form textarea{
-    flex: 1;
-    font-size: 1.3rem;
-    padding: 0.5em 0.7em;
-}
-
-.messageFormBox form button{
-    border-radius: 8px;
-    border: none;
-    padding: 0.5em 0.7em;
-    font-size: 1.125rem;
-    background: violet;
-    color: white;
-    cursor: pointer;
-}
-
 /* Message */
 
 .message{
@@ -99,4 +78,39 @@
 
 .own span{
     text-align: right;
+}
+
+/* Message form box */
+
+
+.messageFormBox form{
+    display: flex;
+    gap: 0.4em;
+    align-items: center;
+}
+.messageFormBox form textarea{
+    flex: 1;
+    font-size: 1.3rem;
+    padding: 0.5em 0.7em;
+}
+
+.messageFormBox form button{
+    border-radius: 8px;
+    border: none;
+    padding: 0.5em 0.7em;
+    font-size: 1.125rem;
+    background: violet;
+    color: white;
+    cursor: pointer;
+}
+
+
+.messageFormBox textarea{
+    border-radius: 20px;
+    outline: none;
+    border: 1px solid rgba(0,0,0,0.2);
+}
+
+.messageFormBox textarea:focus-visible{
+    border: 1px solid rgba(0,0,0,0.5);
 }

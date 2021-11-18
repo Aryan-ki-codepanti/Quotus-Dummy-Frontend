@@ -7,7 +7,7 @@ export const Message = ({ message , own , participants }) => {
             <div className="body">
                 { message.body }
             </div>
-            <span> @{ getAuthor(message.author).username } </span>
+            <span> @{ message.author.id ? message.author.username : getAuthor(message.author).username } </span>
         </div>
     )
 }

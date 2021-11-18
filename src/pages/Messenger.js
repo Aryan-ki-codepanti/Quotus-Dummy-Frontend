@@ -78,8 +78,17 @@ const Messenger = ({ user, host, setUser }) => {
                             setOtherUsers={setOtherUsers}
                             setMyChats={setMyChats}
                         />
-                        <ChatBox user={user} currentChat={ currentChat }/>
-                        <MyChats user={user} myChats={myChats} setCurrentChat={ setCurrentChat } />
+                        <ChatBox
+                            user={user}
+                            currentChat={currentChat}
+                            host={host}
+                            setCurrentChat={setCurrentChat}
+                        />
+                        <MyChats
+                            user={user}
+                            myChats={myChats}
+                            setCurrentChat={setCurrentChat}
+                        />
                     </div>
                 </div>
             )}
