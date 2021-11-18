@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { Message } from "./Message";
 
-export const ChatBox = ({ user, currentChat, setCurrentChat, host }) => {
+export const ChatBox = ({ user, currentChat, setCurrentChat, host , emitMessageToSocket}) => {
     const messageInputRef = useRef(null);
 
     const handleMessageSubmit = async e => {
@@ -28,6 +28,13 @@ export const ChatBox = ({ user, currentChat, setCurrentChat, host }) => {
                 ...prev,
                 messages: prev.messages ? [...prev.messages, data] : [data]
             }));
+
+            // Emit to socket
+            emitMessageToSocket({
+                senderId: user.id,
+                roomId: currentChat.id,
+                text: typedMessage
+            });
 
             // PUT message in room
             res = fetch(`${host}/room-message/${currentChat.id}/${data.id}`, {

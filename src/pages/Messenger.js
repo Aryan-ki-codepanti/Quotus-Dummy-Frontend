@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState , useRef } from "react";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { WelcomeMessage } from "../components/WelcomeMessage";
@@ -6,14 +6,52 @@ import { setUser } from "../redux";
 import { OtherUsers } from "../components/OtherUsers";
 import { ChatBox } from "../components/ChatBox";
 import { MyChats } from "../components/MyChats";
+import { io } from "socket.io-client";
 import "./Messenger.css";
 
 const Messenger = ({ user, host, setUser }) => {
     const navigate = useNavigate();
+    const socket = useRef(null);
 
     const [otherUsers, setOtherUsers] = useState([]);
     const [myChats, setMyChats] = useState([]);
     const [currentChat, setCurrentChat] = useState(null);
+    const [arrivalMessage, setArrivalMessage] = useState(null);
+
+    useEffect(() => {
+        socket.current = io("ws://localhost:3000");
+    }, [ ]);
+
+    useEffect(() => {
+        
+        socket.current.on("getMessage" , ({ senderId, roomId, text }) => {
+            roomId === currentChat?.id &&
+            setArrivalMessage(prev => ({
+                id: Date.now(),
+                body: text,
+                author: senderId,
+                created_at: Date.now()
+            }));
+        });
+
+    }, [ currentChat ]);
+
+    useEffect(() => {
+        arrivalMessage 
+        && currentChat?.participants.find(participant => participant.id === arrivalMessage.author)
+        && arrivalMessage.author !== user.id
+        && setCurrentChat(prev => ({
+            ...prev,
+            messages: prev.messages ? [...prev.messages, arrivalMessage] : [arrivalMessage]
+        }));
+        setArrivalMessage(prev => null);
+    }, [ arrivalMessage , currentChat , user]);
+
+    useEffect(() => {
+        if (user && currentChat){
+            socket.current.emit("addUser" , { userId: user.id , roomId: currentChat.id })
+        }
+    }, [ user , currentChat ]);
 
     useEffect(() => {
         if (!localStorage.getItem("user")) {
@@ -64,6 +102,10 @@ const Messenger = ({ user, host, setUser }) => {
         user && getOtherChats();
     }, [user, host]);
 
+    const emitMessageToSocket = ({ senderId, roomId, text }) => {
+        socket.current.emit("sendMessage", { senderId, roomId, text });
+    };
+
     console.log(user);
     return (
         <>
@@ -83,6 +125,7 @@ const Messenger = ({ user, host, setUser }) => {
                             currentChat={currentChat}
                             host={host}
                             setCurrentChat={setCurrentChat}
+                            emitMessageToSocket={emitMessageToSocket}
                         />
                         <MyChats
                             user={user}

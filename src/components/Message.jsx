@@ -3,6 +3,7 @@ import { format } from "timeago.js";
 
 export const Message = ({ message , own , participants }) => {
     const getAuthor = uId => participants.find(participant => participant.id === uId); 
+    console.log("messgId" , message.id);
     return (
         <div className={ own ? `message own` : `message not-own`}>
             <div className="body">
